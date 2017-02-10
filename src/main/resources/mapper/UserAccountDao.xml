@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dnj.upms.dao.UserAccountDao">
+	<resultMap id="userAccountResultMap" type="com.dnj.upms.entity.UserAccount">
+		<id property="ID" column="id" />
+		<result property="UserName" column="username" />
+		<result property="PassWord" column="password" />
+		<result property="Token" column="token" />
+		<result property="Email" column="email" />
+		<result property="Phone" column="phone" />
+		<result property="UserLevel" column="userlevel" />
+	</resultMap>
+	<insert id="addUserAccount" parameterType="com.dnj.upms.entity.UserAccount"
+		useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO
+		user_account(username,password,token,email,phone,comeform,userlevel,createtime)
+		VALUES(#{UserName},#{PassWord},#{Token},#{Email},#{Phone},#{ComeForm},#{UserLevel},#{CreateTime});
+	</insert>
+	<select id="login"  resultMap="userAccountResultMap">
+		SELECT
+		user_account.id,
+		user_account.password,
+		user_account.token,
+		user_account.userlevel,
+		user_account.username
+		FROM
+		user_account
+		WHERE user_account.username=#{username} AND user_account.password =#{pwd}
+	</select>
+	<select id="checkLogin" resultType="Integer">
+	    SELECT COUNT(*)
+		FROM
+		user_account
+		WHERE user_account.id=#{userid} AND user_account.token =#{token}
+	</select>
+</mapper>
